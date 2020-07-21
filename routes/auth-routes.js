@@ -3,13 +3,14 @@ const passport = require('passport')
 
 // Auth login
 router.get("/login", (req, res) => {
-    res.render("login")
+    res.render("login", {user: req.user})
 })
 
 // Auth logout
 router.get("/logout", (req, res) => {
     //Handle with passport
-    res.send("Logging out")
+    req.logout()
+    res.redirect("/")
 })
 
 
@@ -20,7 +21,7 @@ router.get("/spotify", passport.authenticate('spotify', {
 
 // Auth redirect
 router.get("/spotify/redirect", passport.authenticate('spotify'), (req, res) => {
-    res.send("You've reached callback URI")
+    res.redirect("/dashboard")
 })
 
 module.exports = router
