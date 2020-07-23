@@ -2,12 +2,12 @@ const axios = require('axios')
 
 axios({
     method: "get",
-    url: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=5",
+    url: "https://api.spotify.com/v1/me/player/recently-played?type=track&limit=10&after=1484811043508",
     headers: {
-        "Authorization": 'Bearer ' + 'BQBa4OJJiSjsxctgwvTK2vlsqpbU45x77i8809qk6bt7X8R6kH6PMHxwVCLgHw8fa1RX68FqttPKaAZ8wLGXrRURVGP3UifJw2bvl5EN1zShuLg9aMUx9XUnLiaWxOJo5RqSC7WfsQIqIkcianRmMHo9IRoGcw',
+        "Authorization": 'Bearer ' + 'BQCUsOc2qy5mjmeFYutZqIqfiD6BYTioBUaxWigdOhYRxwdzjxE8c4GRZkTvwVdOStN70stc-om-Tz8ObjXoXIww4Ud0H3LOhA9btiwa_-48-7jDok8gWAFu1WFOMBmnNkW93mx1ibhSBROdDuuMuHmzr8hdDw',
     }
 }).then((res) => {
-    console.log(res.data.items)
+    console.log(res.data.items[0].track.album.artists.length)
     return res
 }).catch((err) => {
     console.log(err)

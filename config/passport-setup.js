@@ -1,4 +1,5 @@
 const passport = require('passport')
+const refresh = require("passport-oauth2-refresh")
 require('dotenv').config()
 const SpotifyStrategy = require("passport-spotify").Strategy
 const User = require('../models/user.js')
@@ -20,8 +21,7 @@ async function updateToken(currentUser, accessToken, refreshToken) {
     await currentUser.save()
 }
 
-passport.use(
-    new SpotifyStrategy({   
+var strategy = new SpotifyStrategy({   
     // Options for SpotifyStrategy
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -40,6 +40,7 @@ passport.use(
                     name: profile._json.display_name,
                     email: profile._json.email,
                     spotifyID: profile._json.id,
+                    image: profile._json.images[0].url,
                     accessToken: accessToken,
                     refreshToken: refreshToken
                 }).then((newUser) => {
@@ -49,4 +50,6 @@ passport.use(
             }
         })
     })
-)
+
+passport.use(strategy)
+refresh.use(strategy)

@@ -1,9 +1,11 @@
 .card img {
     width: 100%;
+    height: 255px;
+    object-fit: cover;
 }
 
 .card {
-    margin-bottom: 20px;
+    margin-top: 20px;
     overflow: hidden;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
     transition: 0.3s;
@@ -16,4 +18,28 @@
 
 .card-content {
     padding: 5px 10px;
+}
+
+#profile {
+    max-height: 150px;
+    border-radius: 150px;
+}
+
+.multicolor-bg {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+    animation: gradient 60s ease infinite;
+    color: white;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }

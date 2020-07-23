@@ -3,7 +3,7 @@ const passport = require('passport')
 
 // Auth login
 router.get("/login", (req, res) => {
-    res.render("login", {user: req.user, javascript: null})
+    res.redirect("/auth/spotify")
 })
 
 // Auth logout
@@ -16,12 +16,12 @@ router.get("/logout", (req, res) => {
 
 // Auth with spotify
 router.get("/spotify", passport.authenticate('spotify', {
-    scope: ['user-read-email', 'user-read-recently-played', 'user-top-read']
+    scope: ['user-read-email', 'user-read-recently-played', 'user-top-read', 'playlist-read-private', 'playlist-read-collaborative']
 }))
 
 // Auth redirect
 router.get("/spotify/redirect", passport.authenticate('spotify'), (req, res) => {
-    res.redirect("/dashboard")
+    res.redirect("/dashboard/")
 })
 
 module.exports = router

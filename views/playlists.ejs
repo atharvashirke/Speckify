@@ -1,0 +1,50 @@
+<%- include("partials/header", {user : user}) %> 
+
+<div class="container-fluid jumbotron text-center multicolor-bg">
+    <div class="row d-flex justify-content-center align-items-center">
+        <img class="mr-4" src=<%= user.image %> id="profile">
+        <h1 class="ml-4 display-4">Hi <%= user.name %></h1>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="text-center">
+        <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard/">Recently Played</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard/top-tracks">Your Top Tracks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard/top-artists">Your Top Artists</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/dashboard/playlists">Playlists</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <% for (var i = 0; i < items.length; i++ ) { %>
+            <div class="col-md-4 col-lg-3">
+                <div class="card">
+                    <img src= <%= items[i].images[0].url %>>
+                    <div class="card-content">
+                        <p> <%= items[i].name %></p>
+                        <% var description = "" %>
+                        <% if (items[i].description == "") { %>
+                            <% description = "No Description" %>
+                        <% } else { %>
+                            <% description = items[i].description %>
+                        <% } %>
+                        <p><%= description %></p>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+
+<%- include("partials/footer", {javascript: javascript}) %> 
