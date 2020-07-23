@@ -32,7 +32,7 @@ app.use('/auth', authRoutes)
 app.use("/dashboard", dashboardRoutes)
 
 app.get("/", (req, res) => {
-    res.render("home", {user: req.user})
+    res.render("home", {user: req.user, javascript: null})
 })
 
 app.listen(process.env.SERVER_PORT, process.env.SERVER_IP, () => {
