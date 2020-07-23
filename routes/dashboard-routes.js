@@ -2,6 +2,8 @@ const router = require('express').Router()
 const axios = require('axios')
 const sanitize = require("../helpers/sanitize.js")
 const refresh = require("passport-oauth2-refresh")
+const mongoose = require("mongoose")
+const User = require("../models/user.js")
 require('dotenv').config()
 
 function authCheck(req, res, next) {
@@ -12,11 +14,20 @@ function authCheck(req, res, next) {
     }
 }
 
-function refreshToken(req) {
-    refresh.requestNewAccessToken('spotify', req.user.refreshToken, (err, accessToken, refreshToken) => {
-        req.user.accessToken = accessToken
-        req.user.refreshToken = refreshToken
-    })
+async function refreshToken(req) {
+    try {
+        const user = await User.findOne({spotifyID: req.user.spotifyID})
+        console.log(user)
+        refresh.requestNewAccessToken('spotify', req.user.refreshToken, async (err, accessToken, refreshToken) => {
+            console.log(accessToken)
+            user.accessToken = accessToken
+            user.refreshToken = refreshToken
+        })
+        await user.save()
+        console.log(user)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 router.get("/", authCheck, (req, res) => {
@@ -29,8 +40,7 @@ router.get("/", authCheck, (req, res) => {
     }).then((response) => { 
         res.render("recently-played", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req)
-        res.redirect("/dashboard/")
+        refreshToken(req).then(res.redirect("/dashboard/"))
     })
 })
 
@@ -44,8 +54,7 @@ router.get("/top-tracks", authCheck, (req, res) => {
     }).then((response) => { 
         res.render("top-tracks", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req)
-        res.redirect("/dashboard/top-tracks")
+        refreshToken(req).then(res.redirect("/top-tracks"))
     })
 })
 
@@ -59,8 +68,7 @@ router.get("/top-artists", authCheck, (req, res) => {
     }).then((response) => { 
         res.render("top-artists", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req)
-        res.redirect("/dashboard/top-artists")
+        refreshToken(req).then(res.redirect("/dashboard/top-artists"))
     })
 })
 
@@ -75,8 +83,7 @@ router.get("/playlists", authCheck, (req, res) => {
     }).then((response) => { 
         res.render("playlists", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req)
-        res.redirect("/dashboard/playlists")
+        refreshToken(req).then(res.redirect("/dashboard/playlists"))
     })
 })
 
