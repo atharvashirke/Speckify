@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express()
+const methodOverride = require("method-override")
 require('dotenv').config()
 const authRoutes = require('./routes/auth-routes.js')
 const dashboardRoutes = require("./routes/dashboard-routes.js")
@@ -8,10 +9,12 @@ const passportSetup = require('./config/passport-setup.js')
 const mongoose = require('mongoose');
 const cookieSession = require("cookie-session")
 
+
 // App configuration
 app.set("view engine", "ejs")
 app.set()
 app.use(express.static("public"))
+app.use(methodOverride("_method"))
 app.use(cookieSession({
     maxAge: 48 * 60 * 60 * 1000,
     keys: [process.env.SESSION_KEY]

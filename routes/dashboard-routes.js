@@ -31,6 +31,10 @@ async function refreshToken(req) {
 }
 
 router.get("/", authCheck, (req, res) => {
+    res.redirect("/dashboard/recently-played")
+})
+
+router.get("/recently-played", authCheck, (req, res) => {
     axios({
         method: "get",
         url: "https://api.spotify.com/v1/me/player/recently-played?type=track&limit=12&after=1484811043508",
@@ -84,6 +88,31 @@ router.get("/playlists", authCheck, (req, res) => {
         res.render("playlists", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
     }).catch((err) => {
         refreshToken(req).then(res.redirect("/dashboard/playlists"))
+    })
+})
+
+router.put("/:source/play/:id", (req, res) => {
+    axios({
+        method: "get",
+        url: "https://api.spotify.com/v1/me/player/devices",
+        headers: {
+            "Authorization": 'Bearer ' + req.user.accessToken,
+        }
+    }).then((response) => {
+        axios({
+            method: "put", 
+            url: "https://api.spotify.com/v1/me/player/play?device_id=" + response.data.devices[0].id,
+            data: {
+                "uris": [req.params.id]
+            },
+            headers: {
+                "Authorization": 'Bearer ' + req.user.accessToken,
+            }
+        }).then(
+            res.redirect("/dashboard/" + req.params.source)
+        )
+    }).catch((err) => {
+        refreshToken(req).then(res.redirect("/dashboard/" + req.params.source))
     })
 })
 

@@ -43,3 +43,29 @@
 		background-position: 0% 50%;
 	}
 }
+
+.card-preview {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: white;
+    padding: 12px 24px;
+    opacity: 0;
+  }
+
+  .card-preview:hover .overlay {
+    opacity: 1;
+  }
+
+  .play-btn {
+    background:none;
+    border:none;
+    font-size:1em;
+    color:white;
+  }
