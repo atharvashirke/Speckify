@@ -28,6 +28,7 @@ var strategy = new SpotifyStrategy({
     callbackURL: '/auth/spotify/redirect'
     }, (accessToken, refreshToken, profile, done) => {
         // Checks if user already exists
+        console.log("Starting Authentication")
         User.findOne({ spotifyID: profile._json.id}).then((currentUser) => {
             if (currentUser) {
                 console.log("User already exists")
