@@ -20,8 +20,8 @@ router.get("/spotify", passport.authenticate('spotify', {
 }))
 
 // Auth redirect
-router.get("/spotify/redirect", passport.authenticate('spotify'), (req, res) => {
-    res.redirect("/dashboard/")
+router.get("https://speckify.herokuapp.com/spotify/redirect", passport.authenticate('spotify'), (req, res) => {
+    res.redirect("https://speckify.herokuapp.com/dashboard/")
 })
 
 module.exports = router

@@ -25,7 +25,7 @@ var strategy = new SpotifyStrategy({
     // Options for SpotifyStrategy
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: '/auth/spotify/redirect'
+    callbackURL: 'https://speckify.herokuapp.com/auth/spotify/redirect'
     }, (accessToken, refreshToken, profile, done) => {
         // Checks if user already exists
         User.findOne({ spotifyID: profile._json.id}).then((currentUser) => {
