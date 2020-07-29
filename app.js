@@ -25,9 +25,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Configuring Database
-mongoose.connect(process.env.DB_URI, () => {
+mongoose.connect(process.env.DB_URI, {useNewUrlParser: true}, () => {
     console.log("Connected to Database")
-})
+}).catch(error => handleError(error));
 
 // Routes
 app.use('/auth', authRoutes)
