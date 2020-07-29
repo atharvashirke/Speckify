@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
     res.render("home", {user: req.user, javascript: null})
 })
 
-app.listen(process.env.SERVER_PORT, process.env.SERVER_IP, () => {
-    console.log("Server has started on port: " + process.env.SERVER_PORT + " ip: " + process.env.SERVER_IP)
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
