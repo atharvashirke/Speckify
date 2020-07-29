@@ -29,27 +29,31 @@ var strategy = new SpotifyStrategy({
     }, (accessToken, refreshToken, profile, done) => {
         // Checks if user already exists
         console.log("Starting Authentication")
-        User.findOne({ spotifyID: profile._json.id}).then((currentUser) => {
-            if (currentUser) {
-                console.log("User already exists")
-                currentUser.accessToken = accessToken
-                currentUser.refreshToken = refreshToken
-                updateToken(currentUser, accessToken, refreshToken).then(done(null, currentUser))
-            } else {
-                // Create new user
-                User.create({
-                    name: profile._json.display_name,
-                    email: profile._json.email,
-                    spotifyID: profile._json.id,
-                    image: profile._json.images[0].url,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken
-                }).then((newUser) => {
-                    console.log('User Created: ' + newUser)
-                    done(null, newUser)
-                })
-            }
-        })
+        try {
+            User.findOne({ spotifyID: profile._json.id}).then((currentUser) => {
+                if (currentUser) {
+                    console.log("User already exists")
+                    currentUser.accessToken = accessToken
+                    currentUser.refreshToken = refreshToken
+                    updateToken(currentUser, accessToken, refreshToken).then(done(null, currentUser))
+                } else {
+                    // Create new user
+                    User.create({
+                        name: profile._json.display_name,
+                        email: profile._json.email,
+                        spotifyID: profile._json.id,
+                        image: profile._json.images[0].url,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
+                    }).then((newUser) => {
+                        console.log('User Created: ' + newUser)
+                        done(null, newUser)
+                    })
+                }
+            })
+        } catch(err) {
+            console.log(err)
+        }
     })
 
 passport.use(strategy)
