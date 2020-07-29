@@ -1,15 +1,35 @@
 const axios = require('axios')
+const mongoose = require("mongoose")
+const User = require("./models/user.js")
 
-axios({
-    method: "get",
-    url: "https://api.spotify.com/v1/me/player/recently-played?type=track&limit=10&after=1484811043508",
-    headers: {
-        "Authorization": 'Bearer ' + 'BQCUsOc2qy5mjmeFYutZqIqfiD6BYTioBUaxWigdOhYRxwdzjxE8c4GRZkTvwVdOStN70stc-om-Tz8ObjXoXIww4Ud0H3LOhA9btiwa_-48-7jDok8gWAFu1WFOMBmnNkW93mx1ibhSBROdDuuMuHmzr8hdDw',
-    }
-}).then((res) => {
-    console.log(res.data.items[0].track.album.artists.length)
-    return res
-}).catch((err) => {
-    console.log(err)
-    console.log("Something went wrong with your request.")
-})
+async function refreshToken(req) {
+    console.log("attempting token refresh")
+    currentUser = await User.findOne({spotifyID : req.user.spotifyID})
+    console.log(currentUser)
+    axios({
+        method: "post",
+        url: "https://accounts.spotify.com/api/token",
+        headers: {
+            "Content-Type" : "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + Buffer.from(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'),
+        },
+        data: {
+            "grant_type": "refresh_token",
+            "refresh_token": currentUser.refreshToken
+        }
+    }).then((response) => {
+        currentUser.refreshToken = response.refresh_token
+        user.save(function(err) {
+            if (err) return next(err)
+            // What's happening in passport's session? Check a specific field...
+            console.log("Before relogin: "+req.session.passport.user.refreshToken)
+        
+            req.login(user, function(err) {
+                if (err) return next(err)
+        
+                console.log("After relogin: "+ req.session.passport.user.refreshToken)
+                res.send(200)
+            })
+        })
+    })
+}

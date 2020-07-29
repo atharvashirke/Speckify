@@ -10,6 +10,7 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
     transition: 0.3s;
     border: none;
+    border-radius: 10px;
 }
 
 .card:hover {
@@ -59,13 +60,148 @@
     opacity: 0;
   }
 
-  .card-preview:hover .overlay {
+.card-preview:hover .overlay {
     opacity: 1;
-  }
+}
 
-  .play-btn {
+.play-btn {
     background:none;
     border:none;
     font-size:1em;
     color:white;
+}
+
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+.main {
+    overflow:auto;
+    padding-bottom:100px; /* this needs to be bigger than footer height*/
+}
+
+footer {
+    position: relative;
+    margin-top: -60px; /* negative value of footer height */
+    height: 60px;
+    clear:both;
+    padding-top:20px;
+    background-color: #eee;
+} 
+
+header.masthead {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(7rem + 72px);
+    padding-bottom: 7rem;
+    background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+    background-size: cover;
   }
+  
+  header.masthead .masthead-content {
+    z-index: 1;
+    position: relative;
+  }
+  
+  header.masthead .masthead-content .masthead-heading {
+    font-size: 4rem;
+  }
+  
+  header.masthead .masthead-content .masthead-subheading {
+    font-size: 2rem;
+  }
+  
+  header.masthead .bg-circle {
+    z-index: 0;
+    position: absolute;
+    border-radius: 100%;
+    background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+  }
+  
+  header.masthead .bg-circle-1 {
+    height: 90rem;
+    width: 90rem;
+    bottom: -55rem;
+    left: -55rem;
+  }
+  
+  header.masthead .bg-circle-2 {
+    height: 50rem;
+    width: 50rem;
+    top: -25rem;
+    right: -25rem;
+  }
+  
+  header.masthead .bg-circle-3 {
+    height: 20rem;
+    width: 20rem;
+    bottom: -10rem;
+    right: 5%;
+  }
+  
+  header.masthead .bg-circle-4 {
+    height: 30rem;
+    width: 30rem;
+    top: -5rem;
+    right: 35%;
+  }
+  
+  @media (min-width: 992px) {
+    header.masthead {
+      padding-top: calc(10rem + 55px);
+      padding-bottom: 10rem;
+    }
+    header.masthead .masthead-content .masthead-heading {
+      font-size: 6rem;
+    }
+    header.masthead .masthead-content .masthead-subheading {
+      font-size: 4rem;
+    }
+  }
+
+.btn-xl {
+    text-transform: uppercase;
+    padding: 1.5rem 3rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+}
+
+.btn-lg {
+  text-transform: uppercase;
+  padding: 1.5rem 3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+.rounded-pill {
+  border-radius: 5rem;
+}
+
+.home-images {
+  width: 100%;
+  max-height: 400px;
+}
+
+.feature {
+  margin-top: 50px;
+  vertical-align: center;
+}
+
+.feature h1 {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .feature h1 {
+    font-size: 1.5rem;
+  }
+}
+
+.feature img {
+  margin-top: 20px;
+}

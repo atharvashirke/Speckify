@@ -3,33 +3,44 @@
 <div class="container-fluid jumbotron text-center multicolor-bg">
     <div class="row d-flex justify-content-center align-items-center">
         <img class="mr-4" src=<%= user.image %> id="profile">
-        <h1 class="ml-4 display-4">Hi <%= user.name %></h1>
+        <h1 class="ml-4 display-4">Hi, <%= user.name %>!</h1>
     </div>
 </div>
 
 
-<div class="container">
-    <div class="text-center">
-        <ul class="nav nav-tabs nav-fill">
-            <li class="nav-item">
-                <a class="nav-link" href="/dashboard/">Recently Played</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/dashboard/top-tracks">Your Top Tracks</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/dashboard/top-artists">Your Top Artists</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/dashboard/playlists">Playlists</a>
-            </li>
-        </ul>
+<div class="container main">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="text-center">
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/">Listening History</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/dashboard/top-tracks">Your Top Tracks</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/dashboard/top-artists">Your Top Artists</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="/dashboard/playlists">Playlists</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="row">
         <% for (var i = 0; i < items.length; i++ ) { %>
             <div class="col-md-4 col-lg-3">
                 <div class="card">
-                    <img src= <%= items[i].images[0].url %>>
+                    <div class="card-preview">
+                        <a href="<%= items[i].external_urls.spotify %>">
+                            <img src= <%= items[i].images[0].url %>>
+                            <div class="overlay">
+                                <button class="play-btn"><i class="fas fa-play fa-4x"></i></button>
+                            </div>
+                        </a>
+                    </div>
                     <div class="card-content">
                         <p> <%= items[i].name %></p>
                         <% var description = "" %>

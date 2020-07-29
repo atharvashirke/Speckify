@@ -35,6 +35,9 @@ app.use('/auth', authRoutes)
 app.use("/dashboard", dashboardRoutes)
 
 app.get("/", (req, res) => {
+    if (req.user) {
+        res.redirect("/dashboard/")
+    }
     res.render("home", {user: req.user, javascript: null})
 })
 

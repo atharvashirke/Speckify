@@ -1,9 +1,7 @@
 const router = require('express').Router()
 const axios = require('axios')
-const sanitize = require("../helpers/sanitize.js")
-const refresh = require("passport-oauth2-refresh")
-const mongoose = require("mongoose")
 const User = require("../models/user.js")
+const qs = require('qs')
 require('dotenv').config()
 
 function authCheck(req, res, next) {
@@ -14,105 +12,87 @@ function authCheck(req, res, next) {
     }
 }
 
-async function refreshToken(req) {
-    try {
-        const user = await User.findOne({spotifyID: req.user.spotifyID})
-        console.log(user)
-        refresh.requestNewAccessToken('spotify', req.user.refreshToken, async (err, accessToken, refreshToken) => {
-            console.log(accessToken)
-            user.accessToken = accessToken
-            user.refreshToken = refreshToken
-        })
-        await user.save()
-        console.log(user)
-    } catch (err) {
-        console.log(err)
-    }
-}
-
 router.get("/", authCheck, (req, res) => {
     res.redirect("/dashboard/recently-played")
 })
 
 router.get("/recently-played", authCheck, (req, res) => {
+    var limit = 20
+    if (req.query.limit) {
+        limit = req.query.limit
+    }
     axios({
         method: "get",
-        url: "https://api.spotify.com/v1/me/player/recently-played?type=track&limit=12&after=1484811043508",
+        url: "https://api.spotify.com/v1/me/player/recently-played?type=track&limit=" + limit + "&before=" + new Date().getTime(),
         headers: {
             "Authorization": 'Bearer ' + req.user.accessToken,
         }
     }).then((response) => { 
-        res.render("recently-played", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
+        res.render("recently-played", {user : req.user, items: response.data.items, limit: limit, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req).then(res.redirect("/dashboard/"))
+        res.redirect("/auth/login")
     })
 })
 
 router.get("/top-tracks", authCheck, (req, res) => {
+    var limit = 20
+    if (req.query.limit) {
+        limit = req.query.limit
+    }
     axios({
         method: "get",
-        url: "https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=12&offset=5",
+        url: "https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=" + limit,
         headers: {
             "Authorization": 'Bearer ' + req.user.accessToken,
         }
     }).then((response) => { 
-        res.render("top-tracks", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
+        res.render("top-tracks", {user : req.user, items: response.data.items, limit: limit, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req).then(res.redirect("/top-tracks"))
+        res.redirect("/auth/login")
     })
 })
 
 router.get("/top-artists", authCheck, (req, res) => {
+    var limit = 20
+    if (req.query.limit) {
+        limit = req.query.limit
+    }
     axios({
         method: "get",
-        url: "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=12&offset=5",
+        url: "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=" + limit,
         headers: {
             "Authorization": 'Bearer ' + req.user.accessToken,
         }
     }).then((response) => { 
-        res.render("top-artists", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
+        res.render("top-artists", {user : req.user, items: response.data.items, limit: limit, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req).then(res.redirect("/dashboard/top-artists"))
+        refreshToken(req).then(axios({
+            method: "get",
+            url: "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=" + limit,
+            headers: {
+                "Authorization": 'Bearer ' + req.user.accessToken,
+            }
+        }).then((response) => { 
+            res.render("top-artists", {user : req.user, items: response.data.items, limit: limit, javascript:"/js/dashboard.js"})
+        })).catch((err) => {
+            res.redirect("/auth/login")
+        }) 
     })
 })
 
 
 router.get("/playlists", authCheck, (req, res) => {
+    var limit = 50
     axios({
         method: "get",
-        url: "https://api.spotify.com/v1/users/" + req.user.spotifyID + "/playlists?limit=12&offset=5",
+        url: "https://api.spotify.com/v1/users/" + req.user.spotifyID + "/playlists?limit=" + limit,
         headers: {
             "Authorization": 'Bearer ' + req.user.accessToken,
         }
     }).then((response) => { 
-        res.render("playlists", {user : req.user, items: response.data.items, javascript:"/js/dashboard.js"})
+        res.render("playlists", {user : req.user, items: response.data.items, limit: limit, javascript:"/js/dashboard.js"})
     }).catch((err) => {
-        refreshToken(req).then(res.redirect("/dashboard/playlists"))
-    })
-})
-
-router.put("/:source/play/:id", (req, res) => {
-    axios({
-        method: "get",
-        url: "https://api.spotify.com/v1/me/player/devices",
-        headers: {
-            "Authorization": 'Bearer ' + req.user.accessToken,
-        }
-    }).then((response) => {
-        axios({
-            method: "put", 
-            url: "https://api.spotify.com/v1/me/player/play?device_id=" + response.data.devices[0].id,
-            data: {
-                "uris": [req.params.id]
-            },
-            headers: {
-                "Authorization": 'Bearer ' + req.user.accessToken,
-            }
-        }).then(
-            res.redirect("/dashboard/" + req.params.source)
-        )
-    }).catch((err) => {
-        refreshToken(req).then(res.redirect("/dashboard/" + req.params.source))
+        res.redirect("/auth/login")
     })
 })
 

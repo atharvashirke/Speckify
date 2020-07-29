@@ -1,9 +1,49 @@
 <%- include("partials/header", {user: user}) %>
 
-<div class="container-fluid jumbotron text-center">
-    <h1 class="display-4">A Power User's Dashboard</h1>
-    <p class="lead">Simple design, elegant functionality.</p>
-    <a href="/auth/login"><button class="btn btn-primary">Login</button></a>
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <h1 class="masthead-heading mb-0">Get your Spotify Spec(k)s</h1>
+        <h2 class="masthead-subheading mb-0">Find Your Top Artists and Tracks <br> Year-Round</h2>
+        <a href="/auth/login" class="btn btn-success btn-xl rounded-pill mt-5">Sign in With Spotify</a>
+      </div>
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+</header>
+
+<div class="main container">
+  <div class="row feature d-flex align-items-center">
+    <div class="col-6 text-center">
+      <h1>Easily find your all-time favorite tracks, artists, and playlists.</h1>
+    </div>
+    <div class="col-6">
+      <img src="/images/music.svg" class="home-images">
+    </div>
+  </div>
+  <div class="row feature d-flex align-items-center">
+    <div class="col-6">
+      <img src="/images/ui.svg" class="home-images">
+    </div>
+    <div class="col-6 text-center">
+      <h1>View your listening history with Speckify's simple user interface.</h1>
+    </div>
+  </div>
+  <div class="row feature d-flex align-items-center">
+    <div class="col-6 text-center">
+      <h1>Play the songs you find in Spotify with a click of a button.</h1>
+    </div>
+    <div class="col-6">
+      <img src="/images/play.svg" class="home-images">
+    </div>
+  </div>
+  <div class="row feature">
+    <div class="col-12 text-center">
+      <a href="/auth/login" class="btn btn-success btn-lg rounded-pill mt-5">Sign in With Spotify</a>
+    </div>
+  </div>
 </div>
 
 <%- include("partials/footer") %>
