@@ -24,6 +24,13 @@
 #profile {
     max-height: 150px;
     border-radius: 150px;
+    margin-right: 30px;
+}
+
+@media (max-width: 615px) {
+  #profile {
+    margin-right: 0;
+  }
 }
 
 .multicolor-bg {
