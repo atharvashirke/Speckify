@@ -12,7 +12,6 @@ const cookieSession = require("cookie-session")
 
 // App configuration
 app.set("view engine", "ejs")
-app.set()
 app.use(express.static("public"))
 app.use(methodOverride("_method"))
 app.use(cookieSession({
